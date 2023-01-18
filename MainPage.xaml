@@ -16,5 +16,212 @@
         <Color x:Key="Other">#000000</Color>
     </ContentPage.Resources>
     
+    <!--Usaremos un control Grid con 2 Filas
+    1 fila con el 30% de la pantalla
+    1 fila con el 70% restante-->
+    <Grid Margin="15">
+        
+        <Grid.RowDefinitions>
+            <!--1 fila con el 30% de la pantalla-->
+            <RowDefinition Height=".3*"/>
+            <!--1 fila con el 70% de la pantalla-->
+            <RowDefinition Height=".7*"/>
+        </Grid.RowDefinitions>
+        <!--Luego colocamos un Frame para la segción de contenido
+        BorderColor="Transparent" Sin Borde-->
+        <Frame Padding="10"
+               BackgroundColor="{StaticResource SectionColor}"
+               BorderColor="Transparent">
+            <!--Ahora necesitamos una Grilla para hacer 3 columnas-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <!--Requerimos de 3 Columnas-->
+                    <ColumnDefinition />
+                    <!--Minimo de espacio para la linea del Centro-->
+                    <ColumnDefinition Width="1"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <!--Fila para el Titulo 10%-->
+                    <RowDefinition Height=".1*"/>
+
+                    <!--Fila para el Titulo 90%-->
+                    <RowDefinition Height=".9*"/>
+                </Grid.RowDefinitions>
+                
+                <!--Comensemos con la etiqueta del titulo
+                Grid.ColumnSpan="3" para indicar que ocupe la cantidad de columnas disponibles = 3
+                HorizontalTextAlignment="Center" para que este en el centro...
+                -->
+                <Label Grid.ColumnSpan="3"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       Text="TOTAL P/PERSON"
+                       TextColor="{StaticResource DarkFont}"/>
+                <!--Otra etiqueta en la fila #1 Grid.Row="1"
+                
+                -->
+                <Label x:Name="lblTotal"
+                       Grid.Row="1"
+                       FontAttributes="Bold"
+                       FontSize="35"
+                       HorizontalTextAlignment="Center"
+                       Text="$0.00"
+                       TextColor="{StaticResource LightFont}"
+                       VerticalOptions="CenterAndExpand"/>
+                <!--Vamos a generar la Linea vertical con un elemento BoxView-->
+                <BoxView
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="0,10,0,0"
+                    VerticalOptions="Center"
+                    Color="#adadad"/>
+
+                <!--Ahora para crear los Elemento Contenedor VerticalStackLayout apilados al final Fila 1 Columna 2-> Sub-Total...-->
+                <VerticalStackLayout
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+                    <!--Ahora los elemento del Titulo SUBTOTAL-->
+                    <Label Text="SUBTOTAL"
+                           TextColor="{StaticResource LightFont}"                         
+                           />
+                    <!--Ahora los elementos el valor del SubTotal-->
+                    <Label x:Name="lblSubTotal"
+                           FontAttributes="Bold"
+                           Text="$0.00"
+                           TextColor="{StaticResource LightFont}"
+                           />
+                    <!--Ahora los elemento del Titulo TIP-->
+                    <Label  Margin="0,10,0,0"
+                            Text="TIP"
+                            TextColor="{StaticResource LightFont}"
+                           />
+                    <!--Ahora los elementos el valor la Propina Tip x Persona-->
+                    <Label  x:Name="lblTipByPerson"
+                            FontAttributes="Bold"
+                            Text="$0.00"
+                            TextColor="{StaticResource LightFont}"/>
+                </VerticalStackLayout>
+            </Grid>
+        </Frame>
+        
+        <!--
+        Debe posicionarse en la fila 1 ya que en la cero 0 esta la seccion anterior
+        Esta es la sección del 70% de la pantalla definido arriba
+        Aca se ingresaran los datos, que se totalizaran y mostraran arriba.-->
+        <Grid Grid.Row="1"
+              Margin="0,15,0,0">
+            <Grid.ColumnDefinitions>
+                <!--Una columna con el 30%-->
+                <ColumnDefinition Width=".3*"/>
+                <!--Una columna con el 70%-->
+                <ColumnDefinition Width=".7*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <!--Ahora definimos 4 filas-->
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <!--Ahora los elementos para ingresar la contidad
+            Es decir: El titulo Label y la caja de entrada Entry-->
+            <Label Text="Enter yor bill: $"
+                   TextColor="{StaticResource LightFont}"
+                   VerticalOptions="Center"/>
+            <!--Se debe indicar que la entrada va en la columna 1
+            para que este a lado del Label que esta en la columna 0
+            Para esta entrada se selecciona el Teclado numerico para evitar
+            que ingresen algún dato erroneo Keyboard="Numeric"
+            Accederemos a esta entrada con el nombre x:Name="txtBill"-->
+            <Entry x:Name="txtBill"
+                   Grid.Column="1"
+                   BackgroundColor="{StaticResource SectionColor}"
+                   Keyboard="Numeric"
+                   Text="0.0"
+                   TextColor="{StaticResource LightFont}"
+                   VerticalOptions="Center"
+                   />
+            
+            <!--Esta es la seccion de las propinas TIP en la Fila 1
+            Con espaio entre los elementos de Spacing="10" und. -->
+            <Label Grid.Row="1"
+                   Text="Choose your TIP"
+                   TextColor="{StaticResource LightFont}"
+                   VerticalOptions="Center"/>
+            <HorizontalStackLayout Grid.Column="1"
+                                   Grid.Row="1"
+                                   HeightRequest="70"
+                                   HorizontalOptions="CenterAndExpand"
+                                   Spacing="10">
+                <Button Text="10%"
+                        HeightRequest="70"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"/>
+                <Button Text="20%"
+                        HeightRequest="70"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"/>
+                <Button Text="30%"
+                        HeightRequest="70"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"/>
+            </HorizontalStackLayout>
+            
+            <!--Esta seccion es para un slider que determina el % personalizado del TIP
+            En la ultima posicion Fila 2 columna 1-->
+            <Label Text="TIP: 0%"
+                   x:Name="lblTip"
+                   Grid.Row="2"
+                   TextColor="{StaticResource LightFont}"
+                   VerticalOptions="Center"/>
+            <Slider x:Name="sldTip"
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Maximum="50"
+                    Minimum="0"/>
+
+            <!--Esta ultima seccion es para un Indicar el total de personas que pagaran la cuenta
+            En la ultima posicion Fila 3 columna 1-->
+            <Label Text="Split the Total"
+                   Grid.Row="3"
+                   TextColor="{StaticResource LightFont}"
+                   VerticalOptions="Center"/>
+            <!--Vamos a crear un controlk con 2 botones y una etiqueta
+            Como todos estan horizontales...
+            En el elemento Label x:Name="lblNroPersons" mostraremos un contador-->
+            <HorizontalStackLayout Grid.Row="3"
+                                   Grid.Column="1"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center">
+                <!--Boton de restar Persona-->
+                <Button x:Name="btnMinus"
+                        Text="-"
+                        WidthRequest="70"/>
+                
+                <Label x:Name="lblNroPersons"
+                       Margin="-5,0,-5,0"
+                       BackgroundColor="{StaticResource SectionColor}"
+                       FontSize="25"
+                       HeightRequest="50"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       Text="1"
+                       TextColor="{StaticResource LightFont}"
+                       VerticalOptions="Center"
+                       VerticalTextAlignment="Center"
+                       WidthRequest="100"
+                       />
+                <!--Boton de incrementar Persona-->
+                <Button x:Name="btnPlus"
+                        Text="+"
+                        WidthRequest="70"/>
+
+            </HorizontalStackLayout>
+        </Grid>
+    </Grid>
     
 </ContentPage>
