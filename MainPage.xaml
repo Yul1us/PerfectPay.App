@@ -128,7 +128,8 @@
             </Grid.RowDefinitions>
             
             <!--Ahora los elementos para ingresar la contidad
-            Es decir: El titulo Label y la caja de entrada Entry-->
+            Es decir: El titulo Label y la caja de entrada Entry
+            -->
             <Label Text="Enter yor bill: $"
                    TextColor="{StaticResource LightFont}"
                    VerticalOptions="Center"/>
@@ -136,7 +137,9 @@
             para que este a lado del Label que esta en la columna 0
             Para esta entrada se selecciona el Teclado numerico para evitar
             que ingresen algún dato erroneo Keyboard="Numeric"
-            Accederemos a esta entrada con el nombre x:Name="txtBill"-->
+            Accederemos a esta entrada con el nombre x:Name="txtBill"
+            Total monto a pagar Factura = bill
+            El Evento Completed nos permite conocer que ya terminaron de ingresar el valor-->
             <Entry x:Name="txtBill"
                    Grid.Column="1"
                    BackgroundColor="{StaticResource SectionColor}"
@@ -144,6 +147,7 @@
                    Text="0.0"
                    TextColor="{StaticResource LightFont}"
                    VerticalOptions="Center"
+                   Completed="txtBill_Completed"
                    />
             
             <!--Esta es la seccion de las propinas TIP en la Fila 1
@@ -157,18 +161,25 @@
                                    HeightRequest="70"
                                    HorizontalOptions="CenterAndExpand"
                                    Spacing="10">
+                <!--Aca se definen propinas fijas, 10%, 20%, 30%
+                Y agregaremos un solo manejador de eventos  Clicked="Button_Clicked" para los 3
+                La tecnica consiste en extraer del Text el valor sin el (%) para 
+                determinar cual es el valor-->
                 <Button Text="10%"
                         HeightRequest="70"
                         VerticalOptions="Center"
-                        HorizontalOptions="Center"/>
+                        HorizontalOptions="Center"
+                        Clicked="Button_Clicked"/>
                 <Button Text="20%"
                         HeightRequest="70"
                         VerticalOptions="Center"
-                        HorizontalOptions="Center"/>
+                        HorizontalOptions="Center"
+                         Clicked="Button_Clicked"/>
                 <Button Text="30%"
                         HeightRequest="70"
                         VerticalOptions="Center"
-                        HorizontalOptions="Center"/>
+                        HorizontalOptions="Center"
+                         Clicked="Button_Clicked"/>
             </HorizontalStackLayout>
             
             <!--Esta seccion es para un slider que determina el % personalizado del TIP
@@ -178,11 +189,14 @@
                    Grid.Row="2"
                    TextColor="{StaticResource LightFont}"
                    VerticalOptions="Center"/>
+            <!--De aca obtendremos el valor de la propina
+            Colocaremos para ello el; evento VaueChanged-->
             <Slider x:Name="sldTip"
                     Grid.Column="1"
                     Grid.Row="2"
                     Maximum="50"
-                    Minimum="0"/>
+                    Minimum="0"
+                    ValueChanged="sldTip_ValueChanged"/>
 
             <!--Esta ultima seccion es para un Indicar el total de personas que pagaran la cuenta
             En la ultima posicion Fila 3 columna 1-->
@@ -197,10 +211,12 @@
                                    Grid.Column="1"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center">
-                <!--Boton de restar Persona-->
+                <!--Boton de restar Persona
+                Se deben crear 2 manejadores uno para cada boton-->
                 <Button x:Name="btnMinus"
                         Text="-"
-                        WidthRequest="70"/>
+                        WidthRequest="70"
+                        Clicked="btnMinus_Clicked"/>
                 
                 <Label x:Name="lblNroPersons"
                        Margin="-5,0,-5,0"
@@ -218,7 +234,8 @@
                 <!--Boton de incrementar Persona-->
                 <Button x:Name="btnPlus"
                         Text="+"
-                        WidthRequest="70"/>
+                        WidthRequest="70"
+                        Clicked="btnPlus_Clicked"/>
 
             </HorizontalStackLayout>
         </Grid>
